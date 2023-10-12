@@ -5,15 +5,20 @@ if (!document.querySelector(".collapse-toggle")) {
     window.location.href.indexOf("/b/") + 11
   );
   // get all lists
-  document.querySelectorAll(".list-header-name").forEach(e => {
+  document.querySelectorAll('[data-testid="list-header"]').forEach(e => {
+    e.classList.add("-list-header")
+    e.parentNode.classList.add("-list")
+    e.parentNode.parentNode.classList.add("-list-wrapper")
+    e.firstChild.firstChild.classList.add("-list-name")
+    e.firstChild.firstChild.nextSibling.classList.add("-list-name-textarea")
     // encoded list title for unique id
     var columnName = encodeURI(e.textContent);
     // get isClosed value from chrome extension storage
     chrome.storage.local.get(boardid + ":" + columnName, isClosed => {
       // if this list is closed, add the -closed class
       if (isClosed[boardid + ":" + columnName]) {
-        e.parentNode.parentNode.parentNode.classList.add("-closed");
-        e.parentNode.parentNode.parentNode.classList.add("-cl");
+        e.parentNode.parentNode.classList.add("-closed");
+        e.parentNode.parentNode.classList.add("-cl");
       }
       // create toggle button
       var toggle = document.createElement("div");
@@ -41,15 +46,17 @@ if (!document.querySelector(".collapse-toggle")) {
         );
       });
       // insert toggle button
-      e.parentNode.insertBefore(toggle, e);
+      e.insertBefore(toggle, e.firstChild);
     });
   });
   // we want to open lists after a short delay if a user is dragging a card on top of one
   var isClosed, openList;
-  document.querySelectorAll(".list-card").forEach(lc => {
+  document.querySelectorAll('[data-testid="list-card"]').forEach(lc => {
     lc.addEventListener("mousemove", lce => {
-      document.querySelectorAll(".js-list.-cl").forEach(l => {
+      document.querySelectorAll('[data-testid="list-wrapper"].-cl').forEach(l => {
         const c = l.getBoundingClientRect();
+        //console.log(c);
+        //console.log(lce.pageX + " " + lce.pageY);
         if (
           lce.pageX > c.left &&
           lce.pageX < c.right &&

@@ -1,7 +1,7 @@
 /* closed list */
-body #board .js-list.-closed {
+body #board .-list-wrapper.-closed {
     transform: rotate(90deg);
-    transform-origin: top left;
+    transform-origin: 13px 1px;
     position: relative;
     height: 42px;
     left: 42px;
@@ -9,26 +9,28 @@ body #board .js-list.-closed {
     margin-right: -182px;
 }
 
+.-list-wrapper.-closed .-list .-list-header {
+    padding-top: 5px;
+    padding-left: 13px;
+}
+
 /* hide everything in a closed list... */
-.js-list.-closed .list * {
+.-list-wrapper.-closed .-list > :not(.-list-header) * {
     display: none !important;
 }
 
-/* ...except for the title and the collapse toggle */
-.js-list.-closed .list .list-header, 
-.js-list.-closed .list .collapse-toggle, 
-.js-list.-closed .list-header-extras, 
-.js-list.-closed .list-header-extras-menu {
-    display: block !important;
+.-list-wrapper .-list .-list-name, 
+.-list-wrapper .-list .-list-name-textarea {
+    padding-left: 6px !important;
 }
 
 /* we need to reduce the width of the title to fit the collapse toggle in */
-.js-list .list .list-header-name {
+.-list-wrapper .-list .-list-header-name {
     width: calc(100% - 22px);
 }
 
 /* collapsed list header - rotated + some css hackery to make it look right */
-.js-list.-closed .list .list-header-name {
+.-list-wrapper.-closed .-list .-list-header-name {
     height: 40px !important;
     width: auto;
     line-height: 30px;
@@ -45,6 +47,7 @@ body #board .js-list.-closed {
 
 /* collapse toggle button */
 .collapse-toggle {
+    display: flex;
     float: left;
     cursor: pointer;
     background: white;
@@ -54,6 +57,7 @@ body #board .js-list.-closed {
     width: 20px;
     text-align: center;
     position: relative;
+    margin-top: 5px;
 }
 
 /* collapse toggle button - triangle */
